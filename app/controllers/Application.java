@@ -17,7 +17,7 @@ import models.repository.*;
 
 
 public class Application extends Controller {
-	
+
 	private static final int FIRST_PAGE = 1;
 	private static List<Poster> adverts;
 	
@@ -64,7 +64,7 @@ public class Application extends Controller {
 			postRepository.persist(poster);
 			postRepository.flush();
 			
-			flash("success", String.valueOf(poster.getCode()));
+			flash("success",  "O codigo do seu anúncio: " + String.valueOf(poster.getCode()));
 		} catch(NewAdException e) {
 			flash("erro", "Anúncio não publicado, pois: " + e.getMessage());
 			return redirect("publique");
@@ -122,29 +122,12 @@ public class Application extends Controller {
     }
 	
 	@Transactional
-	public static Result anuncios(int page, int pageSize, boolean check) {
-		if(check) {
-			postRepository = PosterRepository.getInstance();
-			adverts = postRepository.findAllNotFinalized();
-		}
-		
-		page = page >= FIRST_PAGE ? page : FIRST_PAGE;
-		pageSize = pageSize >= FIRST_PAGE ? pageSize : PosterRepository.DEFAULT_RESULTS;
-				
-		long posterNumber = adverts.size();
-		if(page > (posterNumber / pageSize)) {
-			page = (int) 
-				(Math.ceil(posterNumber / Float.parseFloat(String.valueOf(pageSize))));
-		}
-		
-		Collections.sort(adverts);
-		session("actualPage", String.valueOf(page));
-		
-		int fromIndex = (page - 1) * pageSize;
-		int toIndex = 
-			fromIndex + pageSize < adverts.size() ? fromIndex + pageSize : adverts.size();
-				
-		return ok(anuncios.render(adverts.subList(fromIndex, toIndex), postRepository.countAllPartnerFound()));
+	public static Result anuncios() {
+
+		postRepository = PosterRepository.getInstance();
+		adverts = postRepository.findAllNotFinalized();
+
+		return ok(anuncios.render(adverts, postRepository.countAllPartnerFound()));
 	}
 	
 	@Transactional
@@ -266,6 +249,6 @@ public class Application extends Controller {
 		
 		flash("adFinally", "Anúncio "
 				+ poster.getId() + " finalizado com sucesso!");
-		return redirect(controllers.routes.Application.anuncios(1, 15, true));
+		return redirect(controllers.routes.Application.anuncios());
 	}
 }

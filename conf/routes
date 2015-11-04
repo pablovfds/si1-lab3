@@ -5,7 +5,7 @@
 # Home page
 GET     /                           controllers.Application.index()
 GET  	/publique					controllers.Application.publique()
-GET	    /anuncios					controllers.Application.anuncios(page: Integer ?=1, pagaSize: Integer ?=15, check: Boolean ?= true)
+GET	    /anuncios					controllers.Application.anuncios()
 GET		/anuncio/:id				controllers.Application.anuncio(id: Long)
 
 POST    /publique					controllers.Application.createAd()
