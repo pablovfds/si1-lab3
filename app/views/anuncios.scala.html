@@ -1,0 +1,165 @@
+@(posterList: List[models.entity.Poster], count: Long)
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	    
+	    <!-- Favicon -->
+	    <link rel="shortcut icon" href=@routes.Assets.at("img/favicon.png") type="image/png">
+	    	    
+	    <!-- Bootstrap Core CSS -->
+		<link rel="stylesheet" href=@routes.Assets.at("stylesheets/bootstrap.min.css")>
+		
+		<!-- jQuery -->
+		<script src=@routes.Assets.at("javascripts/jquery.js")></script>
+		
+		<!-- Bootstrap Core JavaScript -->
+		<script type="text/javascript" src=@routes.Assets.at("javascripts/bootstrap.min.js")></script>
+				
+	    <!-- Custom CSS -->
+    	<link href=@routes.Assets.at("stylesheets/business-casual.css") rel="stylesheet">
+    	    	
+	    <!-- Fonts -->
+    	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+    	<link href="http://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
+
+		<title>Sua Música - Lista de anúncios</title>
+    </head>
+	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href=@routes.Application.index()>Sua Música</a>
+				</div>
+				<div class="navbar-collapse collapse" id="navbar">
+					<ul class="nav navbar-nav">
+						<li><a href=@routes.Application.index()><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a></li>
+						<li><a href=@routes.Application.anuncios()>Lista de anúncios</a></li>
+						<li><a href=@routes.Application.publique()>Crie seu anúncio</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+	    <div class="container">
+	        <div class="row">
+	            <div class="box">
+	                <div class="col-lg-12">
+						<br>
+						<br>
+						<br>
+						<h1 class="intro-text text-center">Lista de Anúncios</h1>
+						<br>
+						<br>
+					</div>
+					 <div class="section">
+            			<div class="container">
+                			<div class="row">
+                    			<div class="col-sm-offset-2 col-md-8 text-center">
+                        			<form role="form" method="post" action=@routes.Application.searchAd()>
+                            		<div class="form-group has-feedback">
+                                		<label class="control-label">Pesquise por um anúncio</label>
+                            			<div class="input-group input-group-lg">
+                            				<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+                            				<input class="form-control input-lg" name="search">
+               		 				        <span class="input-group-btn">
+    											<button type="submit" class="btn btn-default">Pesquisar</button>
+  											</span>
+										</div>
+                           		 	</div>
+                            		<div class="form-group">
+                                		<div class="checkbox">
+                                    		<label class="checkbox-inline">
+                                    			<input name="titulo" value="titulo" type="checkbox">Por palavra-chave</label>
+                                			<label class="checkbox-inline">
+                                    			<input name="cidade" value="cidade" type="checkbox">Por cidade</label>
+                        		  			<label class="checkbox-inline">
+                                    			<input name="data" value="data" type="checkbox">Por Data</label>
+                                    		<label class="checkbox-inline">
+                                        		<input name="instrumento" value="instrumento" type="checkbox">Por instrumento</label>
+                                    		<label class="checkbox-inline">
+                                        		<input name="estilo" value="estilo" type="checkbox">Por estilos preferidos</label>
+                                    		<label class="checkbox-inline">
+                                        		<input name="formar uma banda" value="Formar uma Banda" type="checkbox">Formar uma banda</label>
+                    		           		<label class="checkbox-inline">
+                                        		<input name="tocar ocasionalmente" value="Tocar Ocasionalmente" type="checkbox">Tocar ocasionalmente</label>
+                                		</div>
+                    				</div>
+                        			</form>
+                        			<hr>
+                        			<p class="text-center"><small>Anúncios Resolvidos: @count</small></p>
+                    			</div>
+                			</div>
+            			</div>
+        			</div>
+    			<br>
+    			<br>
+                <div class="section">
+        			<div class="container">
+            			<div class="row">
+                			<div class="col-sm-offset-1 col-md-10">
+	           				@if(flash.get("success") != null) {
+            					<div class="alert alert-success alert-dismissible text-center" role="alert">
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4>Anúncio <b>@flash.get("success")</b> criado com sucesso!</h4> 
+									<small>Use o código acima para finalizar este anúncio e não receber 
+									novas notificações de outros usúario sobre o mesmo.</small>
+								</div>
+							}
+							@if(flash.get("notFound") != null) {
+            					<div class="alert alert-info alert-dismissible text-center" role="alert">
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<b>@flash.get("notFound")</b>
+								</div>	
+							}
+            				@if(flash.get("erro") != null) {
+            					<div class="alert alert-danger alert-dismissible text-center" role="alert">
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<b>Erro!</b> @flash.get("erro")
+								</div>
+							}
+							@if(flash.get("adFinally") != null) {
+								<div class="alert alert-success alert-dismissible text-center" role="alert">
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<b>@flash.get("adFinally")</b>
+								</div>
+							} 
+	                        <table class="table table-hover">
+                            	<tbody>
+	                                @for(poster <- posterList) {
+	                                	<tr>
+	                                		<td>
+	                                			<a href=@routes.Application.anuncio(poster.getId())><b>@poster.getTitle()</b></a>
+	                                			<span class="pull-right"><small>@poster.getDateFormat()</small></span>
+	                                			<p>@poster.getResumeDesc()</p>
+	                                		</td>
+                                		</tr>
+                                	}
+	                            </tbody>
+	                        </table>
+	                    </div>
+        			</div>
+    			</div>
+    			<nav class="text-center">
+  					<ul class="pagination pagination-lg">
+    					<li><a href=@routes.Application.anuncios(1, 15, false)> << </a></li>
+    					<li><a href=@routes.Application.anuncios(Integer.parseInt(session.get("actualPage")) - 1, 15, false)>Prev</a></li>
+    					<li><a href=@routes.Application.anuncios(Integer.parseInt(session.get("actualPage")) + 1, 15, false)>Next</a></li>
+    					<li><a href=@routes.Application.anuncios(Integer.MAX_VALUE, 15, false)> >> </a></li>
+  					</ul>
+				</nav>
+			</div>    
+    	</div>
+		</div>
+		</div>
+	</body>
+</html>

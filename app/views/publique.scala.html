@@ -1,0 +1,206 @@
+@(styles: List[models.entity.Style], instruments: List[models.entity.Instrument])
+
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	    
+	    <!-- Favicon -->
+	    <link rel="shortcut icon" href=@routes.Assets.at("img/favicon.png") type="image/png">
+	    	    
+	    <!-- Bootstrap Core CSS -->
+		<link rel="stylesheet" type="text/css" href=@routes.Assets.at("stylesheets/bootstrap.min.css")>
+		
+		 <!-- Bootstrap Multiselect CSS -->
+		<link rel="stylesheet" type="text/css" href=@routes.Assets.at("stylesheets/bootstrap-multiselect.css")>
+			
+		<!-- jQuery -->
+		<script src=@routes.Assets.at("javascripts/jquery.js")></script>
+		
+		<!-- Bootstrap Core JavaScript -->
+		<script type="text/javascript" src=@routes.Assets.at("javascripts/bootstrap.min.js")></script>
+		
+		<!-- Bootstrap Miltiselect JavaScript -->
+		<script type="text/javascript" src=@routes.Assets.at("javascripts/bootstrap-multiselect.js")></script>
+		
+	    <!-- Bootstrap Miltiselect Action -->
+	    <script type="text/javascript" src=@routes.Assets.at("javascripts/bootstrap-multiselect.action.js")></script>
+					
+	    <!-- Custom CSS -->
+    	<link href=@routes.Assets.at("stylesheets/business-casual.css") rel="stylesheet">
+    	    	
+	    <!-- Fonts -->
+    	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+    	<link href="http://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
+
+		<title>Sua Música - Criar anúncio</title>
+    </head>
+	<body>
+	    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	        <div class="container">
+	            <div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	                    <span class="sr-only">Toggle navigation</span>
+	                    <span class="icon-bar"></span>
+	                    <span class="icon-bar"></span>
+	                    <span class="icon-bar"></span>
+	                </button>
+	                <a class="navbar-brand" href=@routes.Application.index()>Sua Música</a>
+	            </div>
+	            <div class="navbar-collapse collapse" id="navbar">
+	                <ul class="nav navbar-nav">
+	                    <li><a href=@routes.Application.index()><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a></li>
+	                    <li><a href=@routes.Application.anuncios()>Lista de anúncios</a></li>
+                        <li><a href=@routes.Application.publique()>Crie seu anúncio</a></li>
+	                </ul>
+	            </div>
+	        </div>
+	    </nav>
+		<div class="container">
+	        <div class="row">
+	            <div class="box">
+	                <div class="col-lg-12">
+						<br>
+						<br>
+						<br>
+	                    <h1 class="intro-text text-center">Crie seu anúncio</h1>
+						<br>
+						<br>
+						<div class="section">
+            				<div class="container">
+            				<div class="row">
+                    			<div class="col-xs-12 col-sm-8">
+                    				@if(flash.get("erro") != null) {
+                    					<div class="alert alert-danger alert-dismissible" role="alert">
+  											<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  											<b>Erro!</b> @flash.get("erro")
+										</div>
+									}
+                        			<form class="form-horizontal" role="form" method="post" action=@routes.Application.createAd()>
+                            		<fieldset>
+                                	<legend>Informação sobre o Anúncio</legend>
+                                		<div class="control-group">
+                                    		<div class="form-group">
+                                        		<div class="col-sm-3">
+                                            		<label class="control-label">Título</label>
+                                        		</div>
+                                        		<div class="col-sm-9">
+                                            		<input type="text" name="titulo" class="form-control" required>
+                                        		</div>
+                                    		</div>
+                                    	</div>
+                                    	<div class="form-group">
+                                        	<div class="col-sm-3">
+                                            	<label class="control-label">Descrição</label>
+                                        	</div>
+                                        	<div class="col-sm-9">
+                                            	<textarea name="descricao" rows="4" class="form-control" required></textarea>
+                                        	</div>
+                                    	</div>
+                        			</fieldset>
+                            		<fieldset>
+                                	<legend>Informações sobre o Anunciante</legend>
+                                		<div class="control-group">
+                                    		<div class="form-group">
+                                        		<div class="col-sm-3">
+                                            		<label class="control-label">Email</label>
+                                        		</div>
+                                        		<div class="col-sm-9">
+                                            		<input type="email" name="email" class="form-control">
+                                        		</div>
+                                    		</div>
+                                    		<div class="form-group">
+                                        		<div class="col-sm-3">
+                                            		<label class="control-label">Cidade</label>
+                                        		</div>
+                                        			<div class="col-sm-9">
+                                            			<input type="text" name="city" class="form-control" required>
+                                       		 	</div>
+                                    		</div>
+                                    		<div class="form-group">
+                                        		<div class="col-sm-3">
+                                            		<label class="control-label">Bairro</label>
+                                        		</div>
+                                        		<div class="col-sm-9">
+                                            		<input type="text" name="bairro" class="form-control" required>
+                                        		</div>
+                                    		</div>
+                                    		<div class="form-group">
+                                        		<div class="col-sm-3">
+                                            		<label class="control-label">Perfil</label>
+                                        		</div>
+                                        		<div class="col-sm-9">
+                                            		<input type="text" name="perfil" class="form-control">
+                                        		</div>
+                                    		</div>
+                                    		<div class="form-group">
+                                        		<div class="col-sm-4">
+                                            		<label class="control-label">Instrumentos</label>
+                                        		</div>
+                                        		<div class="col-sm-8">
+                                            		<select class="form-control multiselect" id="myInst" name="myInst[]" multiple="multiple" required>
+                            		              		@for(instrument <- instruments) {
+                                                			<option value=@instrument.getId()>@instrument.getNome()</option>
+                                                		}
+                                                	</select>
+                                        		</div>
+                                    		</div>
+                                    		<div class="form-group">
+                                        		<div class="col-sm-4">
+                                            		<label class="control-label">Estilos que gosto</label>
+                                        		</div>
+                                        		<div class="col-sm-8">
+                                             		<select class="form-control multiselect" id="goodSty" name="goodSty[]" multiple="multiple">
+                            		              		@for(style <- styles) {
+                                                			<option value=@style.getId()>@style.getNome()</option>
+                                                		}
+                                                	</select>
+                                        		</div>
+                                    		</div>
+                                    		<div class="form-group">
+                                        		<div class="col-sm-4">
+                                            		<label class="control-label">Estilos que são gosto</label>
+                                        		</div>
+                                    			<div class="col-sm-8">
+                                             		<select class="form-control multiselect" id="badSty" name="badSty[]" multiple="multiple">
+                            		              		@for(style <- styles) {
+                                                			<option value=@style.getId()>@style.getNome()</option>
+                                                		}
+                                            		</select>
+                                        		</div>
+                                    		</div>
+                                    		<div class="form-group">
+                                        		<div class="col-sm-3">
+                                            		<label class="control-label">Interesse</label>
+                                        		</div>
+                                        		<div class="col-sm-9">
+                                            		<div class="radio">
+                                            			<label class="radio-inline">
+                                      						<input type="radio" name="interesse" value="Formar uma Banda">Formar uma Banda</input>
+                                  						</label>
+                                  						<label class="radio-inline">
+                                      						<input type="radio" name="interesse" value="Tocar Ocasionalmente">Tocar Ocasionalmente</input>
+                                  						</label>
+                                            		</div>
+                                        		</div>
+                                    		</div>
+                                		</div>
+                            		</fieldset>
+                            		<div class="form-group">
+                                    	<div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" class="btn btn-default">Criar anúncio</button>
+                                        </div>
+                                    </div>
+                        			</form>
+                    			</div>
+                			</div>
+            				</div>
+        				</div>
+	                </div>
+	            </div>
+	        </div>
+		</div>
+	</body>
+</html>
